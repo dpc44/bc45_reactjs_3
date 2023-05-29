@@ -88,9 +88,15 @@ class UserPages extends Component {
             </div>
         )
     }
-
+    shouldComponentUpdate (nextProps) {
+        if (nextProps.arrUser !== this.props.arrUser) {
+            return true
+        }
+        return false
+     }
 
     componentDidMount() {
+        
         if (localStorage.getItem('arrSinhVien')) {
             var stringArrSinhVien = localStorage.getItem('arrSinhVien');
             var arrSinhVien = JSON.parse(stringArrSinhVien);

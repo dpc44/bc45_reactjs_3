@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { userReducer } from '../redux/reducers/userReducer';
 
-class UserForm extends PureComponent {
+class UserForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         // console.log('here')
@@ -215,8 +215,16 @@ class UserForm extends PureComponent {
             </form>
         )
     }
+    shouldComponentUpdate (nextProps) {
+        // console.log(nextProps);
+        if (nextProps.user !== this.props.user || nextProps.disabled !== this.props.disabled) {
+            return true
+        }
+
+        return false
+     }
     componentDidUpdate() {
-        
+        // console.log('x2');
         let res = this.checkInValidForm(this.props.errorForm);
 
         const actionDisabledOff = {
