@@ -1,3 +1,5 @@
+import { stringToSlug } from "../../fun/stringToSlug";
+
 const initialState = [
 
 ]
@@ -35,6 +37,17 @@ export default (state = initialState, action) => {
       newState[IndexUpdate]={...action.payload};
       state = newState;
       saveLocalStorage(state);
+    }; break;
+
+    case 'SEARCH_BY_NAME': {
+      const value =action.payload;
+      let newState = [...state];
+      // console.log(stringToSlug(newState[0].name));
+      console.log(stringToSlug(value));
+      newState = newState.filter((item) => stringToSlug(item.name).includes(stringToSlug(value)));
+      console.log(newState);
+      state = newState;
+      
     }; break;
 
   }

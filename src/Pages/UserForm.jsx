@@ -6,13 +6,18 @@ class UserForm extends PureComponent {
     handleSubmit = (e) => {
         e.preventDefault();
         // console.log('here')
+        document.querySelector('#suaSV').disabled = true;
         const values = this.props.user;
         const action = {
             type: 'SUBMIT_FORM',
             payload: values
         }
         this.props.dispatch(action);
-        document.querySelector('form').reset();
+        const actionReset = {
+            type:'RESET_USER',
+            payload:this.props.user
+        }
+        this.props.dispatch(actionReset)
         const actionDisableAfter = {
             type: 'DISABLE_AFTER',
             payload: true
@@ -113,10 +118,26 @@ class UserForm extends PureComponent {
         return output;
     }
 
-    render() {
+    checkUpdate = (errors) => {
+        
+        let output = true;
+        for (let key in errors) {
+            // console.log(errors[key]);
+            if (errors[key] !=='(*)' && errors[key]!=='') {
+                output = false;
+                break
+            }
+        }
+        return output;
+    }
 
+
+    render() {
+        
         return (
+            
             <form className='frm' onSubmit={this.handleSubmit}>
+                
                 <h3>Thông Tin Sinh Viên</h3>
                 <div className='row'>
                     <div className='col-6'>
@@ -147,14 +168,20 @@ class UserForm extends PureComponent {
                             <p className='text text-danger'>{this.props.errorForm.SDT}</p>
                         </div>
                     </div>
-                    <div className='col-12'>
+                    <div className='text-center'>
                         <div className='form-group'>
                             <button className='btn btn-success mt-2 me-2' id="themSV" type="submit" disabled={this.props.disabled}> Thêm Sinh Viên</button>
 
                             {/* style={{visibility:'hidden'}} */}
-                            <button className='btn btn-success mt-2 me-2' id="suaSV" type='button'  onClick={() => {
+                            <button className='btn btn-success mt-2 me-2' id="suaSV" type='button' onClick={() => {
 
                                 const values = this.props.user;
+                                let res = this.checkUpdate(this.props.errorForm);
+                                // console.log(res)
+                                if(res == false){
+                                    alert('Incorrect Input please do it again');
+                                    return
+                                }
 
                                 const action = {
 
@@ -165,12 +192,18 @@ class UserForm extends PureComponent {
                             }}>Update</button>
 
 
+                            
 
 
-                            <button className='btn btn-success mt-2 me-2' type="reset" value="Reset" onClick={() => {
-                                document.querySelector('#themSV').disabled = false;
+                            <button className='btn btn-success mt-2 me-2' type="reset" onClick={() => {
+                                document.querySelector('#themSV').disabled = true;
                                 document.querySelector('#suaSV').disabled = true;
                                 document.querySelector('#maSV').disabled = false;
+                                const action = {
+                                    type:'RESET_USER',
+                                    payload:this.props.user
+                                }
+                                this.props.dispatch(action)
                             }}>Reset</button>
                         </div>
                     </div>
@@ -183,6 +216,7 @@ class UserForm extends PureComponent {
         )
     }
     componentDidUpdate() {
+        
         let res = this.checkInValidForm(this.props.errorForm);
 
         const actionDisabledOff = {

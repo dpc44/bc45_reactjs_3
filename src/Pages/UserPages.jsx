@@ -3,6 +3,15 @@ import { connect } from 'react-redux'
 import UserForm from './UserForm'
 
 class UserPages extends Component {
+    handleSearch = (e) =>{
+        const {value} = e.target;
+        // console.log(stringToSlug(value))
+        const action = {
+            type:'SEARCH_BY_NAME',
+            payload: value
+        } 
+        this.props.dispatch(action);
+    }
     
     render() {
         const { arrUser } = this.props;
@@ -11,6 +20,8 @@ class UserPages extends Component {
 
             <div className='container'>
                 <UserForm />
+                <label className='mt-2 fs-5 fw-3'>Search By Name</label>
+                <input className='my-3' type="text" style={{width:"100%"}} onChange={this.handleSearch} />
                 <table className='table mt-2'>
                     <thead className='bg-dark text-white'>
                         <tr>
@@ -39,6 +50,7 @@ class UserPages extends Component {
                                     <button className='btn btn-outline-success mx-2' onClick={()=>{
                                         document.querySelector('#themSV').disabled = true;
                                         document.querySelector('#suaSV').disabled = false;
+                                        // this.state.disabled_button = false;
                                         // document.querySelector('#suaSV').style.visibility = 'visible';
                                         document.querySelector('#maSV').disabled = true;
 

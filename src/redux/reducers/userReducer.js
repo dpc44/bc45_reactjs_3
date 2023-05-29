@@ -24,6 +24,17 @@ export const userReducer = (state = initialState, action) =>{
             state = newState
             
         };break;
+
+        case 'RESET_USER':{
+            const values = action.payload;
+            let newState = {...state};
+            for(let key in values){
+                newState[key] = '';
+            }
+            state = newState
+            
+            
+        };break;
     }
     return state
 }
