@@ -43,9 +43,9 @@ export default (state = initialState, action) => {
       const value =action.payload;
       let newState = [...state];
       // console.log(stringToSlug(newState[0].name));
-      console.log(stringToSlug(value));
+      // console.log(stringToSlug(value));
       newState = newState.filter((item) => stringToSlug(item.name).includes(stringToSlug(value)));
-      console.log(newState);
+      // console.log(newState);
       state = newState;
       
     }; break;
