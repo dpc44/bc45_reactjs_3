@@ -6,7 +6,12 @@ class UserForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         // console.log('here')
-        document.querySelector('#suaSV').disabled = true;
+        // document.querySelector('#suaSV').disabled = true;
+
+
+
+
+
         const values = this.props.user;
         const action = {
             type: 'SUBMIT_FORM',
@@ -14,8 +19,8 @@ class UserForm extends Component {
         }
         this.props.dispatch(action);
         const actionReset = {
-            type:'RESET_USER',
-            payload:this.props.user
+            type: 'RESET_USER',
+            payload: this.props.user
         }
         this.props.dispatch(actionReset)
         const actionDisableAfter = {
@@ -23,6 +28,7 @@ class UserForm extends Component {
             payload: true
         }
         this.props.dispatch(actionDisableAfter);
+        console.log('first')
     }
     handleChange = (e) => {
         const { value, id } = e.target;
@@ -119,11 +125,11 @@ class UserForm extends Component {
     }
 
     checkUpdate = (errors) => {
-        
+
         let output = true;
         for (let key in errors) {
             // console.log(errors[key]);
-            if (errors[key] !=='(*)' && errors[key]!=='') {
+            if (errors[key] !== '(*)' && errors[key] !== '') {
                 output = false;
                 break
             }
@@ -133,11 +139,11 @@ class UserForm extends Component {
 
 
     render() {
-        
+
         return (
-            
+
             <form className='frm' onSubmit={this.handleSubmit}>
-                
+
                 <h3>Thông Tin Sinh Viên</h3>
                 <div className='row'>
                     <div className='col-6'>
@@ -173,35 +179,55 @@ class UserForm extends Component {
                             <button className='btn btn-success mt-2 me-2' id="themSV" type="submit" disabled={this.props.disabled}> Thêm Sinh Viên</button>
 
                             {/* style={{visibility:'hidden'}} */}
-                            <button className='btn btn-success mt-2 me-2' id="suaSV" type='button' onClick={() => {
 
-                                const values = this.props.user;
-                                let res = this.checkUpdate(this.props.errorForm);
-                                // console.log(res)
-                                if(res == false){
-                                    alert('Incorrect Input please do it again');
-                                    return
-                                }
+                            {this.props.disabled_update ? <button className='btn btn-success mt-2 me-2' id="suaSV" type='button' disabled>Update</button>
+                                : <button className='btn btn-success mt-2 me-2' id="suaSV" type='button' onClick={(e) => {
+                                    document.querySelector('#maSV').disabled = false;
+                                    const values = this.props.user;
+                                    let res = this.checkUpdate(this.props.errorForm);
+                                    // console.log(res)
+                                    if (res == false) {
+                                        alert('Incorrect Input please do it again');
+                                        return
+                                    }
+                                    const actionDisabledUpdated = {
+                                        type: "ON_OFF_UPDATE",
+                                        payload: true
+                                    }
+                                    this.props.dispatch(actionDisabledUpdated)
 
-                                const action = {
-
-                                    type: 'UPDATE_USER',
-                                    payload: values
-                                }
-                                this.props.dispatch(action);
-                            }}>Update</button>
+                                    const actionReset = {
+                                        type: 'RESET_USER',
+                                        payload: this.props.user
+                                    }
+                                    this.props.dispatch(actionReset)
 
 
-                            
+                                    const action = {
+
+                                        type: 'UPDATE_USER',
+                                        payload: values
+                                    }
+                                    this.props.dispatch(action);
+                                }}>Update</button>}
+
+
+
+
 
 
                             <button className='btn btn-success mt-2 me-2' type="reset" onClick={() => {
                                 document.querySelector('#themSV').disabled = true;
-                                document.querySelector('#suaSV').disabled = true;
+                                const actionDisabledUpdated = {
+                                    type: "ON_OFF_UPDATE",
+                                    payload: true
+                                }
+                                this.props.dispatch(actionDisabledUpdated)
                                 document.querySelector('#maSV').disabled = false;
+
                                 const action = {
-                                    type:'RESET_USER',
-                                    payload:this.props.user
+                                    type: 'RESET_USER',
+                                    payload: this.props.user
                                 }
                                 this.props.dispatch(action)
                             }}>Reset</button>
@@ -215,16 +241,20 @@ class UserForm extends Component {
             </form>
         )
     }
-    shouldComponentUpdate (nextProps) {
-        // console.log(nextProps);
-        if (nextProps.user !== this.props.user || nextProps.disabled !== this.props.disabled) {
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.user !== this.props.user || nextProps.disabled !== this.props.disabled || nextProps.disabled_update != this.props.disabled_update) {
             return true
         }
 
         return false
-     }
-    componentDidUpdate() {
-        // console.log('x2');
+    }
+    componentDidUpdate(prevProps, prevState) {
+        // console.log('x2', prevProps);
+        // console.log('this.props.user', this.props.user);
+        // console.log('prevState', prevState);
+        // console.log('this.state', this.state);
+        console.log('first test')
         let res = this.checkInValidForm(this.props.errorForm);
 
         const actionDisabledOff = {
@@ -240,7 +270,8 @@ const mapStateToProps = (state) => ({
     user: state.userReducer,
     arrUser: state.arrUserReducer,
     errorForm: state.errorFormReducer,
-    disabled: state.disabledReducer
+    disabled: state.disabledReducer,
+    disabled_update: state.disabledUpdateReducer
 })
 
 

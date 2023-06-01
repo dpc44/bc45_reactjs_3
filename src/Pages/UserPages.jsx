@@ -63,7 +63,7 @@ class UserPages extends Component {
                                     }}  >Xóa</button>
                                     <button className='btn btn-outline-success mx-2' onClick={() => {
                                         document.querySelector('#themSV').disabled = true;
-                                        document.querySelector('#suaSV').disabled = false;
+                                        // document.querySelector('#suaSV').disabled = false;
                                         // this.state.disabled_button = false;
                                         // document.querySelector('#suaSV').style.visibility = 'visible';
                                         document.querySelector('#maSV').disabled = true;
@@ -72,6 +72,11 @@ class UserPages extends Component {
                                         // for(let index of tag){
                                         //     document.getElementById(index.id).value =item[index.id];
                                         // }
+                                        const actionDisabledUpdated = {
+                                            type: "ON_OFF_UPDATE",
+                                            payload: false
+                                        }
+                                        this.props.dispatch(actionDisabledUpdated)
                                         const action = {
                                             type: "EDIT_USER",
                                             payload: item

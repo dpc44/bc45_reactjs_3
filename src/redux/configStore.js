@@ -18,6 +18,18 @@ export const store = configureStore({
 
             return state
         },
+
+        disabledUpdateReducer : (state = true, action) => {
+            switch(action.type){
+                
+                case 'ON_OFF_UPDATE':{
+                    console.log(action.payload);
+                    state= action.payload;
+                };break;
+            }
+
+            return state
+        },
         userReducer: userReducer,
         arrUserReducer: arrUserReducer,
         errorFormReducer: errorFormReducer,
