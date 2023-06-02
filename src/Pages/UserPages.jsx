@@ -77,6 +77,13 @@ class UserPages extends Component {
                                             payload: false
                                         }
                                         this.props.dispatch(actionDisabledUpdated)
+                                        
+                                        const actionResetError = {
+                                            type: 'RESET_ERROR',
+                                            payload: this.props.user
+                                        }
+                                        this.props.dispatch(actionResetError)
+
                                         const action = {
                                             type: "EDIT_USER",
                                             payload: item

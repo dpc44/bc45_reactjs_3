@@ -15,6 +15,16 @@ export default (state = initialState, { type, payload }) => {
         state = newState;
         // console.log(state)
     };break;
+    case 'RESET_ERROR':{
+      const values = payload;
+      let newState = {...state};
+      for(let key in values){
+          newState[key] = '(*)';
+      }
+      state = newState
+      
+      
+  };break;
   
 
   default:

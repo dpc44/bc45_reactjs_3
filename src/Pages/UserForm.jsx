@@ -23,11 +23,11 @@ class UserForm extends Component {
             payload: this.props.user
         }
         this.props.dispatch(actionReset)
-        const actionDisableAfter = {
-            type: 'DISABLE_AFTER',
-            payload: true
-        }
-        this.props.dispatch(actionDisableAfter);
+        // const actionDisableAfter = {
+        //     type: 'DISABLE_AFTER',
+        //     payload: true
+        // }
+        // this.props.dispatch(actionDisableAfter);
         console.log('first')
     }
     handleChange = (e) => {
@@ -209,6 +209,11 @@ class UserForm extends Component {
                                         payload: values
                                     }
                                     this.props.dispatch(action);
+                                    const actionResetError = {
+                                        type: 'RESET_ERROR',
+                                        payload: this.props.user
+                                    }
+                                    this.props.dispatch(actionResetError)
                                 }}>Update</button>}
 
 
@@ -230,6 +235,11 @@ class UserForm extends Component {
                                     payload: this.props.user
                                 }
                                 this.props.dispatch(action)
+                                const actionResetError = {
+                                    type: 'RESET_ERROR',
+                                    payload: this.props.user
+                                }
+                                this.props.dispatch(actionResetError)
                             }}>Reset</button>
                         </div>
                     </div>
@@ -250,11 +260,8 @@ class UserForm extends Component {
         return false
     }
     componentDidUpdate(prevProps, prevState) {
-        // console.log('x2', prevProps);
-        // console.log('this.props.user', this.props.user);
-        // console.log('prevState', prevState);
-        // console.log('this.state', this.state);
-        console.log('first test')
+        // console.log('first test')
+
         let res = this.checkInValidForm(this.props.errorForm);
 
         const actionDisabledOff = {
@@ -262,6 +269,7 @@ class UserForm extends Component {
             payload: res
         }
         this.props.dispatch(actionDisabledOff);
+
     }
 
 }
